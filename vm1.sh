@@ -83,5 +83,20 @@ cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > $(hostname -f).crt
 
 touch /etc/nginx/conf.d/default.conf
 
-#JUST FOR CHANGES TO FUCKING COMMIT!
-#AGAIN!!!
+echo "
+server {
+    server_name $EXTERNAL_IF;
+    listen EXTERNAL_IF:80;
+
+    access_log /var/log/nginx/test.log;
+    error_log /var/log/nginx/test.log;
+
+    location / {
+        proxy_pass       https://$APACHE_VLAN_IP:8080;
+        proxy_set_header Host      $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+"
+service nginx restart
+
