@@ -73,3 +73,4 @@ cat /etс/ssl/certs/web.crt /etc/ssl/certs/root-ca.crt > vm1.crt
 
 touch /etc/nginx/conf.d/default.conf
 
+#JUST FOR CHANGES TO FUCKING COMMIT!
