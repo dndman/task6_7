@@ -64,5 +64,5 @@ openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
 -subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=vm1"
 
 #подписываем запрос на сертификат
-openssl x509 -req -in /etc/ssl/vm1.csr -CA /etc/ssl/certs/root-ca.crt -CA /etc/ssl/certs/root-ca.key -Cacreateseial -out /etc/ssl/vm1.crt -days 100
+openssl x509 -req -in /etc/ssl/vm1.csr -CA /etc/ssl/certs/root-ca.crt -CA /etc/ssl/certs/root-ca.key -CAcreateseial -out /etc/ssl/vm1.crt -days 100
 
