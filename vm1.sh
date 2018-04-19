@@ -53,8 +53,9 @@ apt-get -y install nginx
 ADDR=`ip addr show $EXTERNAL_IF|grep " inet " |awk '{print $2}'`
 
 echo "
-[SAN] subjectAltName=External_IP:${ADDR}
-" > /temp/oneused
+[SAN]
+ subjectAltName=External_IP:${ADDR}
+" > /tmp/oneused
 
 
 #герерация ключа
