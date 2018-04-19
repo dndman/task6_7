@@ -38,6 +38,7 @@ iface $INTERNAL_IF.$VLAN inet static
 
 service networking restart
 
+ip route flush 0/0
 route add default gw $GW_IP
 
 
