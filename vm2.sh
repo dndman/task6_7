@@ -1,4 +1,9 @@
-cat << 'EOF' > /etc/network/interfaces
+#!/bin/bash
+
+. ./vm2.config
+
+#cat << 'EOF' > /etc/network/interfaces
+echo "
 
 # This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
@@ -10,18 +15,27 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-auto ens3
-iface ens3 inet dhcp
+#auto $EXTERNAL_IF
+#iface $EXTERNAL_IF inet $EXT_IP
 
-auto ens3.278
-iface ens3.278 inet static
- address 200.0.0.2
- netmask 255.255.255.0
- vlan_raw_device ens3
+auto $INTERNAL_IF
+iface $INTERNAL_IF inet static
+ address $INT_IP
+# netmask 255.255.255.0
+
+auto $MANAGEMENT_IF
+iface $MANAGEMENT_IF inet dhcp
 
 
+auto $INTERNAL_IF.$VLAN
+iface $INTERNAL_IF.$VLAN inet static
+ address $VLAN_IP
+# netmask 255.255.255.0
+ vlan_raw_device $INTERNAL_IF
 
-EOF
 
-service networking restart
+" > /etc/network/interfaces
+
+#EOF
+
 
