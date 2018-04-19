@@ -62,11 +62,11 @@ openssl genrsa -out /etc/ssl/certs/selfCA.key 2048
 
 #генерим запрос на сертификат
 openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
--out /etc/ssl/vm1.crt \
+-out /etc/ssl/certs/web.crt \
 -subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=vm1"
 
 #подписываем запрос на сертификат
-openssl x509 -req -in /etc/ssl/vm1.crt -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key -CAcreateserial -out /etc/ssl/vm1.crt -days 100
+openssl x509 -req -in /etc/ssl/certs/web.crt -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key -CAcreateserial -out /etc/ssl/certs/web.crt -days 100
 
 touch /etc/nginx/conf.d/default.conf
 
