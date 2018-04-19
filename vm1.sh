@@ -72,7 +72,7 @@ openssl genrsa -out /etc/ssl/certs/selfCA.key 2048
 openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
 -out /etc/ssl/certs/web.crt \
 -subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=$(hostname -f)" \
--reqexts SAN -extensions SAN -config /temp/oneused
+-reqexts SAN -extensions SAN -config /tmp/oneused
 
 
 #подписываем запрос на сертификат
