@@ -68,5 +68,8 @@ openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
 #подписываем запрос на сертификат
 openssl x509 -req -in /etc/ssl/certs/web.crt -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key -CAcreateserial -out /etc/ssl/certs/web.crt -days 100
 
+cat /etx/ssl/certs/web.crt /etc/ssl/certs/root-ca.crt > vm1.crt
+
+
 touch /etc/nginx/conf.d/default.conf
 
