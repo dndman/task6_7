@@ -2,7 +2,9 @@
 
 . ./vm1.config
 
-cat << 'EOF' > /etc/network/interfaces
+#cat << 'EOF' > /etc/network/interfaces
+echo "
+
 # This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
 
@@ -32,7 +34,9 @@ iface $INTERNAL_IF.$VLAN inet static
  vlan_raw_device $INTERNAL_IF
 
 
-EOF
+" /etc/network/interfaces
+
+#EOF
 
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1' /etc/sysctl.conf
 
@@ -41,7 +45,7 @@ iptables -t nat -A POSTROUTING -o ens3 -s 10.0.0.0/24 -j MASQUERADE
 
 service networking restart
 
-Apt-get update
+apt-get update
 apt-get -y install nginx
 
 #герерация ключа
