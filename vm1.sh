@@ -34,7 +34,7 @@ iface $INTERNAL_IF.$VLAN inet static
  vlan_raw_device $INTERNAL_IF
 
 
-" /etc/network/interfaces
+" > /etc/network/interfaces
 
 #EOF
 
