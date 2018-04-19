@@ -38,6 +38,8 @@ iface $INTERNAL_IF.$VLAN inet static
 
 service networking restart
 
+route add default gw $GW_IP
+
 
 apt-get update
 apt-get install apache2
