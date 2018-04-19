@@ -50,6 +50,13 @@ service networking restart
 apt-get update
 apt-get -y install nginx
 
+ADDR=`ip addr show $EXTERNAL_IF|grep " inet " |awk '{print $2}'`
+
+echo "
+[SAN] subjectAltName=External_IP:${ADDR}
+" > /temp/oneused
+
+
 #герерация ключа
 openssl genrsa -out /etc/ssl/certs/root-ca.key 2048
 
@@ -63,12 +70,14 @@ openssl genrsa -out /etc/ssl/certs/selfCA.key 2048
 #генерим запрос на сертификат
 openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
 -out /etc/ssl/certs/web.crt \
--subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=vm1"
+-subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=$(hostname -f)"
+--reqexts SAN -extensions SAN -config /temp/oneused
+
 
 #подписываем запрос на сертификат
 openssl x509 -req -in /etc/ssl/certs/web.crt -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key -CAcreateserial -out /etc/ssl/certs/web.crt -days 100
 
-cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > vm1.crt
+cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > $(hostname -f).crt
 
 
 touch /etc/nginx/conf.d/default.conf
