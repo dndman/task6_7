@@ -2,7 +2,7 @@
 
 . ./vm2.config
 
-#cat << 'EOF' > /etc/network/interfaces
+
 echo "
 
 # This file describes the network interfaces available on your system
@@ -36,6 +36,7 @@ iface $INTERNAL_IF.$VLAN inet static
 
 " > /etc/network/interfaces
 
-#EOF
+service networking restart
+
 
 
