@@ -60,7 +60,7 @@ openssl genrsa -out /etc/ssl/certs/selfCA.key 2048
 
 #генерим запрос на сертификат
 openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
-out -/etc/ssl/vm1.crt \
+-out /etc/ssl/vm1.crt \
 -subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=vm1"
 
 #подписываем запрос на сертификат
