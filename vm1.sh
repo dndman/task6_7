@@ -40,6 +40,8 @@ iface $INTERNAL_IF.$VLAN inet static
 
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
 
+sysctl -p
+
 iptables -t nat -A POSTROUTING -o ens3 -s 10.0.0.0/24 -j MASQUERADE
 
 
