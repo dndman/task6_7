@@ -1,5 +1,6 @@
 #!/bin/bash
 
+. ./vm1.config
 
 cat << 'EOF' > /etc/network/interfaces
 # This file describes the network interfaces available on your system
@@ -12,19 +13,23 @@ auto lo
 iface lo inet loopback
 
 # The primary network interface
-auto ens3
-iface ens3 inet dhcp
+auto $EXTERNAL_IF
+iface $EXTERNAL_IF inet $EXT_IP
 
-auto ens9
-iface ens9 inet dhcp
-# address 10.0.0.1
+auto $INTERNAL_IF
+iface $INTERNAL_IF inet static
+ address $INT_IP
 # netmask 255.255.255.0
 
-auto ens9.278
-iface ens9.278 inet static
- address 200.0.0.1
- netmask 255.255.255.0
- vlan_raw_device ens9
+auto $MANAGEMENT_IF
+iface $MANAGEMENT_IF inet dhcp
+
+
+auto $INTERNAL_IF.$VLAN
+iface $INTERNAL_IF.$VLAN inet static
+ address $VLAN_IP
+# netmask 255.255.255.0
+ vlan_raw_device $INTERNAL_IF
 
 
 EOF
