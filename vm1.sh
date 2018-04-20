@@ -103,6 +103,6 @@ server {
     }
 }
 
-" > /etc/nginx/conf.d/default.conf
+" > /etc/nginx/sites-available/defaut
 service nginx restart
 
