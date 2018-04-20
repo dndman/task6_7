@@ -70,13 +70,13 @@ openssl genrsa -out /etc/ssl/certs/selfCA.key 2048
 
 #генерим запрос на сертификат
 openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
--out /etc/ssl/certs/web.scr \
+-out /etc/ssl/certs/web.csr \
 -subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=$(hostname -f)" \
 -reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf /tmp/oneused)
 
 
 #подписываем запрос на сертификат
-openssl x509 -req -in /etc/ssl/certs/web.scr -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key \
+openssl x509 -req -in /etc/ssl/certs/web.csr -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key \
 -CAcreateserial -out /etc/ssl/certs/web.crt -days 100 -extensions SAN -extfile /tmp/oneused
 
 cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > /etc/ssl/certs/$(hostname -f).crt
@@ -103,12 +103,12 @@ server {
     listen              443 ssl;
     server_name         $EXTERNAL_IF;
     ssl_certificate     /etc/ssl/certs/$(hostname -f).crt;
-    ssl_certificate_key www.example.com.key;
+    ssl_certificate_key /etc/ssl/certs/selfCA.key;
     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
     ssl_ciphers         HIGH:!aNULL:!MD5;
     ...
 }
 
-"
+" > /etc/nginx/conf.d/default.conf
 service nginx restart
 
