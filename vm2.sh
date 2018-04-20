@@ -40,13 +40,17 @@ service networking restart
 
 ip route flush 0/0
 route add default gw $GW_IP
+echo "
+up route add default gw $GW_IP $EXTERNAL_IF
+" >> /etc/network/interfaces
+
 
 
 apt-get update
 apt-get -y install apache2
 
 sed -i 's/*:80/$APACHE_VLAN_IP:80/' /etc/apache2/sites-available/000-default.conf
-#sed -i 's//$APACHE_VLAN_IP:80/'
+sed -i 's/Listen 80/Listen $APACHE_VLAN_IP:80/' /etc/apache2/ports.conf
 
 service apache2 restart
 
