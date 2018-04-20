@@ -87,20 +87,19 @@ touch /etc/nginx/conf.d/default.conf
 echo "
 server {
     server_name $EXTERNAL_IF;
-    listen EXTERNAL_IF:80;
-
+    listen 443;
     access_log /var/log/nginx/test.log;
     error_log /var/log/nginx/test.log;
+
+     ssl_certificate     /etc/ssl/certs/$(hostname -f).crt;
+     ssl_certificate_key /etc/ssl/certs/selfCA.key;
+     ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+     ssl_ciphers         HIGH:!aNULL:!MD5;
 
     location / {
         proxy_pass       https://$APACHE_VLAN_IP:8080;
         proxy_set_header Host      $host;
         proxy_set_header X-Real-IP $remote_addr;
-           ssl_certificate     /etc/ssl/certs/$(hostname -f).crt;
-           ssl_certificate_key /etc/ssl/certs/selfCA.key;
-           ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
-           ssl_ciphers         HIGH:!aNULL:!MD5;
-           ...
     }
 }
 
