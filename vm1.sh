@@ -54,7 +54,7 @@ ADDR=`ip addr show $EXTERNAL_IF|grep " inet " |awk '{print $2}'`
 
 echo "
 [SAN]
- subjectAltName=External_IP:${ADDR}
+ subjectAltName=IP:${ADDR}
 " > /tmp/oneused
 
 
@@ -70,15 +70,16 @@ openssl genrsa -out /etc/ssl/certs/selfCA.key 2048
 
 #генерим запрос на сертификат
 openssl req -new -newkey rsa:4096 -key /etc/ssl/certs/selfCA.key \
--out /etc/ssl/certs/web.crt \
+-out /etc/ssl/certs/web.scr \
 -subj "/C=UA/ST=Kharkov/L=Kharkov/O=Student/CN=$(hostname -f)" \
--reqexts SAN -extensions SAN -config /tmp/oneused
+-reqexts SAN -extensions SAN -config <(cat /etc/ssl/openssl.cnf /tmp/oneused)
 
 
 #подписываем запрос на сертификат
-openssl x509 -req -in /etc/ssl/certs/web.crt -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key -CAcreateserial -out /etc/ssl/certs/web.crt -days 100
+openssl x509 -req -in /etc/ssl/certs/web.scr -CA /etc/ssl/certs/root-ca.crt -CAkey /etc/ssl/certs/root-ca.key \
+-CAcreateserial -out /etc/ssl/certs/web.crt -days 100 -extensions SAN -extfile /tmp/oneused
 
-cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > $(hostname -f).crt
+cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > /etc/ssl/certs/$(hostname -f).crt
 
 
 touch /etc/nginx/conf.d/default.conf
@@ -97,6 +98,17 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
+
+server {
+    listen              443 ssl;
+    server_name         $EXTERNAL_IF;
+    ssl_certificate     /etc/ssl/certs/$(hostname -f).crt;
+    ssl_certificate_key www.example.com.key;
+    ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+    ...
+}
+
 "
 service nginx restart
 
