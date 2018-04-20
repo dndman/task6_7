@@ -82,8 +82,6 @@ openssl x509 -req -in /etc/ssl/certs/web.csr -CA /etc/ssl/certs/root-ca.crt -CAk
 cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > /etc/ssl/certs/$(hostname -f).crt
 
 
-touch /etc/nginx/conf.d/default.conf
-
 echo "
 server {
     server_name $(hostname -f);
