@@ -85,7 +85,7 @@ cat /etc/ssl/certs/web.crt  /etc/ssl/certs/root-ca.crt > /etc/ssl/certs/$(hostna
 echo "
 server {
     server_name $(hostname -f);
-    listen 443;
+    listen 443 ssl;
     access_log /var/log/nginx/test.log;
     error_log /var/log/nginx/test.log;
 
@@ -95,7 +95,7 @@ server {
      ssl_ciphers         HIGH:!aNULL:!MD5;
 
     location / {
-        proxy_pass       https://$APACHE_VLAN_IP:80;
+        proxy_pass       http://$APACHE_VLAN_IP:80;
         proxy_set_header Host      $(hostname -f);
         proxy_set_header X-Real-IP $ADDR;
     }

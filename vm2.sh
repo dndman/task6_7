@@ -46,6 +46,7 @@ apt-get update
 apt-get -y install apache2
 
 sed -i 's/*:80/$APACHE_VLAN_IP:80/' /etc/apache2/sites-available/000-default.conf
+sed -i 's//$APACHE_VLAN_IP:80/'
 
 service apache2 restart
 
