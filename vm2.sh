@@ -43,10 +43,7 @@ route add default gw $GW_IP
 
 
 apt-get update
-apt-get install apache2
+apt-get -y install apache2
 
-sed -i 's/80/8080/' /etc/apache2/ports.conf
-sed -i 's/*:80/$APACHE_VLAN_IP:8080/' /etc/apache2/sites-available/000-default.conf
 
-service apache2 restart
 

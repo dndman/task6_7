@@ -86,7 +86,7 @@ touch /etc/nginx/conf.d/default.conf
 
 echo "
 server {
-    server_name $EXTERNAL_IF;
+    server_name $(hostname -f);
     listen 443;
     access_log /var/log/nginx/test.log;
     error_log /var/log/nginx/test.log;
@@ -97,9 +97,9 @@ server {
      ssl_ciphers         HIGH:!aNULL:!MD5;
 
     location / {
-        proxy_pass       https://$APACHE_VLAN_IP:8080;
-        proxy_set_header Host      $host;
-        proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass       https://$APACHE_VLAN_IP:80;
+        proxy_set_header Host      $(hostname -f);
+        proxy_set_header X-Real-IP $ADDR;
     }
 }
 
