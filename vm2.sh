@@ -36,7 +36,11 @@ iface $INTERNAL_IF.$VLAN inet static
 
 " > /etc/network/interfaces
 
+sleep 5
+
 service networking restart
+
+sleep 5
 
 ip route flush 0/0
 route add default gw $GW_IP
@@ -49,7 +53,7 @@ up route add default gw $GW_IP $EXTERNAL_IF
 apt-get update
 apt-get -y install apache2
 
-sed -i 's/*:80/$APACHE_VLAN_IP:80/' /etc/apache2/sites-available/000-default.conf
+sed -i 's/*:80/'$APACHE_VLAN_IP:80'/' /etc/apache2/sites-available/000-default.conf
 sed -i 's/Listen 80/Listen $APACHE_VLAN_IP:80/' /etc/apache2/ports.conf
 
 service apache2 restart
